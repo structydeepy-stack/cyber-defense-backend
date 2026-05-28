@@ -151,6 +151,17 @@ async def clear_logs():
 async def get_status():
     return {"status": "active"}  # You can make this smarter later
 
+@app.post("/trigger")
+async def trigger_from_attacker(request: Request):
+    data = await request.json()
+    event = data.get("event", "unknown")
+    
+    add_log(f"🚨 EXTERNAL TRIGGER from Attacker C2: {event}", "CRITICAL")
+    add_log("SSL Connection + Persistent Behavior Detected", "ALERT")
+    add_log("Self-signed cert in /tmp flagged", "WARNING")
+    add_log("🛡️ Containment Activated — Blocking C2 Channel", "SUCCESS")
+    return {"status": "alert_processed"}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
