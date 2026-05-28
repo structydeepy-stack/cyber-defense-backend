@@ -147,6 +147,10 @@ async def clear_logs():
     add_log("Logs cleared by operator", "INFO")
     return {"status": "cleared"}
 
+@app.get("/status")
+async def get_status():
+    return {"status": "active"}  # You can make this smarter later
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
